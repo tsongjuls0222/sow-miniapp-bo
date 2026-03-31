@@ -3,8 +3,14 @@ import { useLanguage } from "@/global/LanguageContext";
 
 function LoginCard({ form, onChange, onSubmit, loading, errorMessage }) {
   const { t } = useLanguage();
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // prevent page reload
+    onSubmit();
+  };
+
   return (
-    <div className="login-card">
+    <form className="login-card" onSubmit={handleSubmit}>
       <h1>{t("Log in")}</h1>
 
       <label>{t("Enter your email address")}</label>
@@ -34,7 +40,7 @@ function LoginCard({ form, onChange, onSubmit, loading, errorMessage }) {
 
       {errorMessage && <p className="login-error">{errorMessage}</p>}
 
-      <button type="button" className="login-btn" onClick={onSubmit} disabled={loading}>
+      <button type="submit" className="login-btn" disabled={loading}>
         {loading ? "Loading..." : t("Log in")}
       </button>
 
@@ -42,7 +48,7 @@ function LoginCard({ form, onChange, onSubmit, loading, errorMessage }) {
         <a href="#">{t("Register")}</a>
         <a href="#">{t("Forgotten password?")}</a>
       </div>
-    </div>
+    </form>
   );
 }
 
