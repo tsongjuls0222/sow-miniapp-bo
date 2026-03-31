@@ -37,5 +37,16 @@ export const GetLanguage = async (langCode) => {
   }
 };
 
+export const logoutUser = async () => {
+  try {
+    const response = await api.post("/auth/logout");
+    console.log("Logout response:", response);
+    return response;
+  } catch (error) {
+    console.log("Logout error:", error);
+    console.log("Backend message:", error.response?.data);
+  }
+};
+
 
 

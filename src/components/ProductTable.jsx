@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   FaArrowRight,
   FaEllipsisH,
@@ -12,11 +12,14 @@ import {
 } from "react-icons/fa";
 
 export default function ProductTable({ products: initialProducts }) {
-  const [products, setProducts] = useState(initialProducts || []);
-  const [selectedRowId, setSelectedRowId] = useState(
-    initialProducts?.[0]?.id ?? null
-  );
+  const [products, setProducts] = useState([]);
+  const [selectedRowId, setSelectedRowId] = useState(null);
   const [openRowId, setOpenRowId] = useState(null);
+
+  useEffect(() => {
+    setProducts(initialProducts || []);
+    setSelectedRowId(initialProducts?.[0]?.id ?? null);
+  }, [initialProducts]);
 
   const selectedExists = useMemo(
     () => products.some((item) => item.id === selectedRowId),
@@ -54,6 +57,10 @@ export default function ProductTable({ products: initialProducts }) {
     console.log("Deleted product:", product);
     setOpenRowId(null);
   };
+
+  if (!products.length) {
+    return <div>No products found.</div>;
+  }
 
   return (
     <div className="productTableWrapper">
@@ -113,7 +120,7 @@ export default function ProductTable({ products: initialProducts }) {
               </div>
 
               <div className="pill">
-                <span className="pillText">{product.articleNo}</span>
+                <span className="pillText">{product.article_no}</span>
               </div>
 
               <div className="pill">
@@ -125,7 +132,7 @@ export default function ProductTable({ products: initialProducts }) {
               </div>
 
               <div className="pill">
-                <span className="pillText">{product.inPrice}</span>
+                <span className="pillText">{product.in_price}</span>
               </div>
 
               <div className="pill">
@@ -159,9 +166,9 @@ export default function ProductTable({ products: initialProducts }) {
                     <span className="expandedLabel">Article No.</span>
                     <input
                       className="expandedInput"
-                      value={product.articleNo}
+                      value={product.article_no || ""}
                       onChange={(e) =>
-                        handleChange(product.id, "articleNo", e.target.value)
+                        handleChange(product.id, "article_no", e.target.value)
                       }
                     />
                   </div>
@@ -170,9 +177,9 @@ export default function ProductTable({ products: initialProducts }) {
                     <span className="expandedLabel">In Price</span>
                     <input
                       className="expandedInput"
-                      value={product.inPrice}
+                      value={product.in_price || ""}
                       onChange={(e) =>
-                        handleChange(product.id, "inPrice", e.target.value)
+                        handleChange(product.id, "in_price", e.target.value)
                       }
                     />
                   </div>
@@ -181,7 +188,7 @@ export default function ProductTable({ products: initialProducts }) {
                     <span className="expandedLabel">Unit</span>
                     <input
                       className="expandedInput"
-                      value={product.unit}
+                      value={product.unit || ""}
                       onChange={(e) =>
                         handleChange(product.id, "unit", e.target.value)
                       }
@@ -192,7 +199,7 @@ export default function ProductTable({ products: initialProducts }) {
                     <span className="expandedLabel">In Stock</span>
                     <input
                       className="expandedInput"
-                      value={product.stock}
+                      value={product.stock || ""}
                       onChange={(e) =>
                         handleChange(product.id, "stock", e.target.value)
                       }
@@ -203,7 +210,7 @@ export default function ProductTable({ products: initialProducts }) {
                     <span className="expandedLabel">Price</span>
                     <input
                       className="expandedInput"
-                      value={product.price}
+                      value={product.price || ""}
                       onChange={(e) =>
                         handleChange(product.id, "price", e.target.value)
                       }
@@ -214,7 +221,7 @@ export default function ProductTable({ products: initialProducts }) {
                     <span className="expandedLabel">Product/Service</span>
                     <input
                       className="expandedInput"
-                      value={product.name}
+                      value={product.name || ""}
                       onChange={(e) =>
                         handleChange(product.id, "name", e.target.value)
                       }
@@ -225,7 +232,7 @@ export default function ProductTable({ products: initialProducts }) {
                     <span className="expandedLabel">Description</span>
                     <input
                       className="expandedInput"
-                      value={product.description}
+                      value={product.description || ""}
                       onChange={(e) =>
                         handleChange(product.id, "description", e.target.value)
                       }
@@ -234,21 +241,21 @@ export default function ProductTable({ products: initialProducts }) {
                 </div>
 
                 <div className="expandedActions">
-                    <button
-                      type="button"
-                      className="saveBtn"
-                      onClick={() => handleSave(product)}
-                    >
-                      Save
-                    </button>
+                  <button
+                    type="button"
+                    className="saveBtn"
+                    onClick={() => handleSave(product)}
+                  >
+                    Save
+                  </button>
 
-                    <button
-                      type="button"
-                      className="delBtn"
-                      onClick={() => handleDelete(product)}
-                    >
-                      Delete
-                    </button>
+                  <button
+                    type="button"
+                    className="delBtn"
+                    onClick={() => handleDelete(product)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             )}

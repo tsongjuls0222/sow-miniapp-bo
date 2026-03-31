@@ -1,214 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "@/styles/dashboard.css";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import ProductTable from "@/components/ProductTable";
+import { getAllProducts } from "@/services/productService";
 
 function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [productfilter, setProductFilter] = useState({
+    article_no: "",
+    name: ""
+  });
 
-  const [products] = useState([
-    {
-      id: 1,
-      articleNo: "1234567890",
-      name: "This is a test product with fifty characters this!",
-      inPrice: "900500",
-      price: "1500800",
-      unit: "kilometers/hour",
-      stock: "2500600",
-      description: "This is the description with fifty characters this"
-    },
-    {
-      id: 2,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 3,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 4,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 5,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 6,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 7,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 8,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 9,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 10,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 11,
-      articleNo: "1234567890",
-      name: "This is a test product with fifty characters this!",
-      inPrice: "900500",
-      price: "1500800",
-      unit: "kilometers/hour",
-      stock: "2500600",
-      description: "This is the description with fifty characters this"
-    },
-    {
-      id: 12,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 13,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 14,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 15,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 16,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 17,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 18,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 19,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    },
-    {
-      id: 20,
-      articleNo: "12345678902",
-      name: "This is a test product with fifty characters this 2!",
-      inPrice: "9005002",
-      price: "15008002",
-      unit: "kilometers/hour 2",
-      stock: "25006002",
-      description: "This is the description with fifty characters this 2"
-    }
-  ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedProducts = await getAllProducts(productfilter);
+        setProducts(fetchedProducts?.data || []);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        setProducts([]);
+      }
+    };
+
+    fetchData();
+  }, [productfilter]);
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+
+    setProductFilter((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSearch = async () => {
+    setAppliedFilter(productfilter);
+    console.log("Applying search with filter:", appliedFilter);
+    const fetchedProducts = await getAllProducts(appliedFilter);
+    setProducts(fetchedProducts?.data || []);
+    console.log("Search applied with filter:", fetchedProducts);
+  };
 
   return (
     <div className="pageLayout">
@@ -225,13 +59,25 @@ function DashboardPage() {
             <div className="toolbar">
               <div className="searchSection">
                 <div className="searchBox">
-                  <input type="text" placeholder="Search Article No..." />
-                  <button type="button">⌕</button>
+                  <input
+                    type="text"
+                    name="article_no"
+                    placeholder="Search Article No..."
+                    value={productfilter.article_no}
+                    onChange={handleFilterChange}
+                  />
+                  <button type="button" onClick={handleSearch}>⌕</button>
                 </div>
 
                 <div className="searchBox">
-                  <input type="text" placeholder="Search Product ..." />
-                  <button type="button">⌕</button>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Search Product ..."
+                    value={productfilter.name}
+                    onChange={handleFilterChange}
+                  />
+                  <button type="button" onClick={handleSearch}>⌕</button>
                 </div>
               </div>
 
