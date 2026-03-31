@@ -1,0 +1,145 @@
+.topbar {
+  height: 80px;
+  width: 100%;
+  background: #1387f2;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1300;
+}
+
+.profileSection {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hamburger {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 26px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.profileText h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.profileText p {
+  margin: 2px 0 0;
+  font-size: 14px;
+}
+
+.languageSection {
+  position: relative;
+}
+
+.langTrigger {
+  background: #1387f2;
+  color: #ffffff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.langFlag {
+  width: 26px;
+  height: 18px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
+.langArrow {
+  font-size: 11px;
+  line-height: 1;
+  color: #000000;
+}
+
+.langDropdown {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  width: 220px;
+  background: #000000;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 999999;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.langItem {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  padding: 10px 0;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.langItem:hover {
+  opacity: 0.75;
+}
+
+
+@media (max-width: 1024px) {
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .profileSection {
+    gap: 8px;
+  }
+
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .avatar {
+    display: none;
+  }
+
+  .profileText {
+    display: none;
+  }
+
+  .langTrigger {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+}
