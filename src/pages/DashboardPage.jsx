@@ -8,6 +8,8 @@ import { getAllProducts } from "@/services/productService";
 function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [productfilter, setProductFilter] = useState({
     article_no: "",
     name: ""
@@ -16,11 +18,15 @@ function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
+
         const fetchedProducts = await getAllProducts(productfilter);
-        setProducts(fetchedProducts?.data || []);
+        setProducts(Array.isArray(fetchedProducts?.data) ? fetchedProducts.data : []);
       } catch (error) {
         console.error("Failed to fetch products:", error);
         setProducts([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -29,19 +35,15 @@ function DashboardPage() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-
+    setLoading(true);
     setProductFilter((prev) => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSearch = async () => {
-    setAppliedFilter(productfilter);
-    console.log("Applying search with filter:", appliedFilter);
-    const fetchedProducts = await getAllProducts(appliedFilter);
-    setProducts(fetchedProducts?.data || []);
-    console.log("Search applied with filter:", fetchedProducts);
+  const handleSearch = () => {
+    setProductFilter(productfilter);
   };
 
   return (
@@ -94,7 +96,7 @@ function DashboardPage() {
               </div>
             </div>
 
-            <ProductTable products={products} />
+            <ProductTable products={products} loading={loading} />
           </main>
         </div>
       </div>

@@ -15,10 +15,18 @@ export default function ProductTable({ products: initialProducts }) {
   const [products, setProducts] = useState([]);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [openRowId, setOpenRowId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setProducts(initialProducts || []);
-    setSelectedRowId(initialProducts?.[0]?.id ?? null);
+    setLoading(true);
+
+    const safeProducts = Array.isArray(initialProducts) ? initialProducts : [];
+
+    setProducts(safeProducts);
+    setSelectedRowId(safeProducts?.[0]?.id ?? null);
+    setOpenRowId(null);
+
+    setLoading(false);
   }, [initialProducts]);
 
   const selectedExists = useMemo(
@@ -58,8 +66,12 @@ export default function ProductTable({ products: initialProducts }) {
     setOpenRowId(null);
   };
 
+  if (loading) {
+    return <div className="loadingState">Loading products...</div>;
+  }
+
   if (!products.length) {
-    return <div>No products found.</div>;
+    return <div className="emptyState">No products found.</div>;
   }
 
   return (
