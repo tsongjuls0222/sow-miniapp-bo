@@ -35,8 +35,8 @@ function Topbar({ onHamburgerClick }) {
         <div className={styles.avatar}>👨</div>
 
         <div className={styles.profileText}>
-          <h3>John Andre</h3>
-          <p>Storfjord AS</p>
+          <h3>Test01</h3>
+          <p>Test01</p>
         </div>
       </div>
 
