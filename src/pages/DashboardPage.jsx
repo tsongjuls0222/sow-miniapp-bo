@@ -8,6 +8,7 @@ import { getAllProducts } from "@/services/productService";
 import { useAuth } from "@/global/AuthContext";
 import ProductModals from "@/components/ProductModal";
 import { addProduct } from "@/services/productService";
+import { useLanguage } from "@/global/LanguageContext";
 
 function DashboardPage() {
   const { accessToken, user, authLoading } = useAuth();
@@ -16,6 +17,7 @@ function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [searchTrigger, setSearchTrigger] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const { t } = useLanguage();
   const [productfilter, setProductFilter] = useState({
     article_no: "",
     name: ""
@@ -119,7 +121,7 @@ function DashboardPage() {
                   <input
                     type="text"
                     name="article_no"
-                    placeholder="Search Article No..."
+                    placeholder={t("Search Article No")}
                     value={productfilter.article_no}
                     onChange={handleFilterChange}
                     onKeyDown={(e) => {
@@ -135,7 +137,7 @@ function DashboardPage() {
                   <input
                     type="text"
                     name="name"
-                    placeholder="Search Product ..."
+                    placeholder={t("Search Product")}
                     value={productfilter.name}
                     onChange={handleFilterChange}
                     onKeyDown={(e) => {
@@ -150,13 +152,13 @@ function DashboardPage() {
 
               <div className="actionButtons">
                 <button className="actionBtn" type="button" onClick={() => setOpenModal(true)}>
-                  New Product <span>●</span>
+                  {t("New Product")} <span>●</span>
                 </button>
                 <button className="actionBtn" type="button">
-                  Print List <span>●</span>
+                  {t("Print List")} <span>●</span>
                 </button>
                 <button className="actionBtn" type="button">
-                  Advanced mode <span>●</span>
+                  {t("Advanced mode")} <span>●</span>
                 </button>
               </div>
             </div>

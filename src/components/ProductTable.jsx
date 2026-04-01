@@ -13,6 +13,7 @@ import {
 
 import ProductExpanded from "@/components/ProductExpanded";
 import { deleteProduct, updateProduct } from "@/services/productService";
+import { useLanguage } from "@/global/LanguageContext";
 
 export default function ProductTable({
   products: initialProducts = [],
@@ -23,6 +24,8 @@ export default function ProductTable({
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [openRowId, setOpenRowId] = useState(null);
   const [message, setMessage] = useState(null);
+  const { t } = useLanguage();
+
 
   useEffect(() => {
     const safeProducts = Array.isArray(initialProducts) ? initialProducts : [];
@@ -212,37 +215,37 @@ export default function ProductTable({
 
         <div className="headerCell">
           <FaHashtag className="headerIcon" />
-          <span>Article No.</span>
+          <span>{t("Article No.")}</span>
         </div>
 
         <div className="headerCell">
           <FaBoxOpen className="headerIcon" />
-          <span>Product/Service</span>
+          <span>{t("Product/Service")}</span>
         </div>
 
         <div className="headerCell">
           <FaDollarSign className="headerIcon" />
-          <span>Price</span>
+          <span>{t("Price")}</span>
         </div>
 
         <div className="headerCell">
           <FaCoins className="headerIcon" />
-          <span>In Price</span>
+          <span>{t("In Price")}</span>
         </div>
 
         <div className="headerCell">
           <FaBalanceScale className="headerIcon" />
-          <span>Unit</span>
+          <span>{t("Unit")}</span>
         </div>
 
         <div className="headerCell">
           <FaWarehouse className="headerIcon" />
-          <span>In Stock</span>
+          <span>{t("In Stock")}</span>
         </div>
 
         <div className="headerCell">
           <FaAlignLeft className="headerIcon" />
-          <span>Description</span>
+          <span>{t("Description")}</span>
         </div>
 
         <div></div>

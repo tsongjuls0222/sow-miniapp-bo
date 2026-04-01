@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/global/LanguageContext";
 
 const initialForm = {
   article_no: "",
@@ -13,6 +14,7 @@ const initialForm = {
 function ProductModal({ open, onClose, onSubmit, loading = false }) {
   const [form, setForm] = useState(initialForm);
   const [popup, setPopup] = useState(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (open) {
@@ -87,19 +89,19 @@ function ProductModal({ open, onClose, onSubmit, loading = false }) {
           </div>
         )}
 
-        <h2>Add Product</h2>
+        <h2>{t("Add Product")}</h2>
 
         <form onSubmit={handleSubmit} className="modalForm">
           <input
             name="article_no"
-            placeholder="Article No"
+            placeholder={t("Article No.")}
             value={form.article_no}
             onChange={handleChange}
           />
 
           <input
             name="name"
-            placeholder="Product Name"
+            placeholder={t("Product/Service")}
             value={form.name}
             onChange={handleChange}
           />
@@ -107,7 +109,7 @@ function ProductModal({ open, onClose, onSubmit, loading = false }) {
           <input
             name="in_price"
             type="number"
-            placeholder="In Price"
+            placeholder={t("In Price")}
             value={form.in_price}
             onChange={handleChange}
           />
@@ -115,14 +117,14 @@ function ProductModal({ open, onClose, onSubmit, loading = false }) {
           <input
             name="price"
             type="number"
-            placeholder="Price"
+            placeholder={t("Price")}
             value={form.price}
             onChange={handleChange}
           />
 
           <input
             name="unit"
-            placeholder="Unit"
+            placeholder={t("Unit")}
             value={form.unit}
             onChange={handleChange}
           />
@@ -130,14 +132,14 @@ function ProductModal({ open, onClose, onSubmit, loading = false }) {
           <input
             name="stock"
             type="number"
-            placeholder="Stock"
+            placeholder={t("In Stock")}
             value={form.stock}
             onChange={handleChange}
           />
 
           <textarea
             name="description"
-            placeholder="Description"
+            placeholder={t("Description")}
             value={form.description}
             onChange={handleChange}
           />
@@ -149,7 +151,7 @@ function ProductModal({ open, onClose, onSubmit, loading = false }) {
               onClick={onClose}
               disabled={loading}
             >
-              Cancel
+              {t("Cancel")}
             </button>
 
             <button
@@ -157,7 +159,7 @@ function ProductModal({ open, onClose, onSubmit, loading = false }) {
               className="modalAddBtn"
               disabled={loading}
             >
-              {loading ? "Adding..." : "Add Product"}
+              {loading ? "Adding..." : t("Add Product")}
             </button>
           </div>
         </form>

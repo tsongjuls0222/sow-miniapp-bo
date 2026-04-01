@@ -1,14 +1,20 @@
+
+import { useLanguage } from "@/global/LanguageContext";
+
 export default function ProductExpanded({
   product,
   onChange,
   onSave,
   onDelete
 }) {
+
+const { t } = useLanguage();
+
   return (
     <div className="productExpanded">
       <div className="expandedGrid">
         <div className="expandedField">
-          <span className="expandedLabel">Article No.</span>
+          <span className="expandedLabel">{t("Article No.")}</span>
           <input
             className="expandedInput"
             value={product.article_no || ""}
@@ -19,7 +25,7 @@ export default function ProductExpanded({
         </div>
 
         <div className="expandedField">
-          <span className="expandedLabel">In Price</span>
+          <span className="expandedLabel">{t("In Price")}</span>
           <input
             className="expandedInput"
             value={product.in_price || ""}
@@ -30,7 +36,7 @@ export default function ProductExpanded({
         </div>
 
         <div className="expandedField">
-          <span className="expandedLabel">Unit</span>
+          <span className="expandedLabel">{t("Unit")}</span>
           <input
             className="expandedInput"
             value={product.unit || ""}
@@ -41,7 +47,7 @@ export default function ProductExpanded({
         </div>
 
         <div className="expandedField">
-          <span className="expandedLabel">In Stock</span>
+          <span className="expandedLabel">{t("In Stock")}</span>
           <input
             className="expandedInput"
             value={product.stock || ""}
@@ -52,7 +58,7 @@ export default function ProductExpanded({
         </div>
 
         <div className="expandedField">
-          <span className="expandedLabel">Price</span>
+          <span className="expandedLabel">{t("Price")}</span>
           <input
             className="expandedInput"
             value={product.price || ""}
@@ -63,7 +69,7 @@ export default function ProductExpanded({
         </div>
 
         <div className="expandedField">
-          <span className="expandedLabel">Product/Service</span>
+          <span className="expandedLabel">{t("Product/Service")}</span>
           <input
             className="expandedInput"
             value={product.name || ""}
@@ -74,7 +80,7 @@ export default function ProductExpanded({
         </div>
 
         <div className="expandedField expandedFieldFull">
-          <span className="expandedLabel">Description</span>
+          <span className="expandedLabel">{t("Description")}</span>
           <input
             className="expandedInput"
             value={product.description || ""}
@@ -87,11 +93,11 @@ export default function ProductExpanded({
 
       <div className="expandedActions">
         <button className="saveBtn" onClick={() => onSave(product)}>
-          Save
+          {t("Save")}
         </button>
 
         <button className="delBtn" onClick={() => onDelete(product)}>
-          Delete
+          {t("Delete")}
         </button>
       </div>
     </div>

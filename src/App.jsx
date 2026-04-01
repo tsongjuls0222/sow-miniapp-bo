@@ -1,6 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "@/pages/LoginPage";
 import InvoicesPage from "@/pages/InvoicesPage";
+import MultipleInvoicesPage from "./pages/MultipleInvoicesPage";
+import UnpaidInvoicesPage from "./pages/UnpaidInvoicesPage";
+import OfferPage from "./pages/OfferPage";
+import ImportExportPage from "./pages/ImportExportPage";
+import InventoryPage from "./pages/InventoryPage";
+import MemberInvoicingPage from "./pages/MemberInvoicingPage";
 import DashboardPage from "@/pages/DashboardPage";
 import CustomersPage from "./pages/CustomersPage";
 import BusinessPage from "./pages/BusinessPage";
@@ -54,7 +60,7 @@ function App() {
           path="/invoice-journal"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <InvoicesPage />
             </ProtectedRoute>
           }
         />
@@ -72,7 +78,7 @@ function App() {
           path="/multiple-invoicing"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <MultipleInvoicesPage />
             </ProtectedRoute>
           }
         />
@@ -81,7 +87,7 @@ function App() {
           path="/unpaid"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <UnpaidInvoicesPage />
             </ProtectedRoute>
           }
         />
@@ -90,7 +96,7 @@ function App() {
           path="/offer"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <OfferPage />
             </ProtectedRoute>
           }
         />
@@ -99,7 +105,7 @@ function App() {
           path="/inventory"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <InventoryPage />
             </ProtectedRoute>
           }
         />
@@ -108,7 +114,7 @@ function App() {
           path="/member-invoicing"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <MemberInvoicingPage />
             </ProtectedRoute>
           }
         />
@@ -117,7 +123,7 @@ function App() {
           path="/import-export"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <ImportExportPage />
             </ProtectedRoute>
           }
         />
