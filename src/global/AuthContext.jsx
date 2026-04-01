@@ -31,7 +31,9 @@ export function AuthProvider({ children }) {
   const loadProfile = async () => {
     try {
       const response = await getProfile();
-      setUser(response.data.data.user);
+      const profileUser = response?.data?.data?.user ?? response?.data?.user ?? null;
+
+      setUser(profileUser);
     } catch (error) {
       console.error("Load profile failed:", error);
       setUser(null);
@@ -54,10 +56,14 @@ export function AuthProvider({ children }) {
     const bootstrapAuth = async () => {
       try {
         const refreshResponse = await refreshUserToken();
-        const newAccessToken = refreshResponse.data.data.accessToken;
+        const newAccessToken =
+          refreshResponse?.data?.data?.accessToken ??
+          refreshResponse?.data?.accessToken ??
+          null;
 
         setAccessToken(newAccessToken);
       } catch (error) {
+        console.error("Refresh token failed:", error);
         setAccessToken(null);
         setUser(null);
       } finally {
@@ -69,7 +75,11 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    if (!accessToken) return;
+    if (!accessToken) {
+      setUser(null);
+      return;
+    }
+
     loadProfile();
   }, [accessToken]);
 
@@ -89,5 +99,11 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
 }

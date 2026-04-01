@@ -460,6 +460,147 @@ body {
   border-radius: 16px;
 }
 
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+  overflow: auto;
+}
+
+.modalBox {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+.modalHeader h2 {
+  margin: 0 0 16px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modalForm input,
+.modalForm textarea {
+  width: 100%;
+  display: block;
+  border: 1px solid #d7e5ea;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #374151;
+  background: #ffffff;
+  outline: none;
+}
+
+.modalForm input:focus,
+.modalForm textarea:focus {
+  border-color: #8fdcf1;
+  box-shadow: 0 0 0 3px rgba(56, 174, 232, 0.12);
+}
+
+.modalForm textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.modalCancelBtn {
+  height: 42px;
+  min-width: 110px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 999px;
+  background: #eef3f6;
+  color: #5f6b76;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modalAddBtn {
+  height: 42px;
+  min-width: 130px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 999px;
+  background: #1387f2;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(19, 135, 242, 0.25);
+}
+
+.modalCancelBtn:disabled,
+.modalAddBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.modalPopup {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modalPopup.success {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.modalPopup.error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+@media (max-width: 480px) {
+  .modalBox {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .modalHeader h2 {
+    font-size: 24px;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .modalCancelBtn,
+  .modalAddBtn {
+    width: 100%;
+  }
+}
+
 @media (max-width: 1024px) {
   .dashboard {
     display: block;

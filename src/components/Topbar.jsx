@@ -4,8 +4,10 @@ import GB_logo from "@/assets/GB.png";
 import SE_logo from "@/assets/SE.png";
 import styles from "@/styles/module/topbar.module.css";
 import { useLanguage } from "@/global/LanguageContext";
+import { useAuth } from "@/global/AuthContext";
 
 function Topbar({ onHamburgerClick }) {
+  const { user } = useAuth();
   const { lang, changeLanguage } = useLanguage();
   const [open, setOpen] = useState(false);
 
@@ -35,8 +37,8 @@ function Topbar({ onHamburgerClick }) {
         <div className={styles.avatar}>👨</div>
 
         <div className={styles.profileText}>
-          <h3>Test01</h3>
-          <p>Test01</p>
+          <h3>{user?.first_name} {user?.last_name}</h3>
+          <p>{user?.email}</p>
         </div>
       </div>
 
