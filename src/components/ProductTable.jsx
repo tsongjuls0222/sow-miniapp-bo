@@ -22,11 +22,22 @@ export default function ProductTable({
   const [products, setProducts] = useState([]);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [openRowId, setOpenRowId] = useState(null);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     const safeProducts = Array.isArray(initialProducts) ? initialProducts : [];
     setProducts(safeProducts);
   }, [initialProducts]);
+
+  useEffect(() => {
+    if (!message) return;
+
+    const timer = setTimeout(() => {
+      setMessage(null);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [message]);
 
   const safeProducts = useMemo(() => {
     return Array.isArray(products) ? products : [];
@@ -77,7 +88,7 @@ export default function ProductTable({
 
   const handleSave = async (product) => {
     try {
-      await updateProduct(product.id, {
+      const response = await updateProduct(product.id, {
         article_no: product.article_no,
         name: product.name,
         in_price: Number(product.in_price) || 0,
@@ -87,13 +98,40 @@ export default function ProductTable({
         description: product.description
       });
 
+      if (response?.status !== 200) {
+        setMessage({
+          type: "error",
+          text: "Server error while updating product"
+        });
+        return;
+      }
+
+      if (response?.data?.code !== 1) {
+        setMessage({
+          type: "error",
+          text: response?.data?.message || "Update failed"
+        });
+        return;
+      }
+
+      setMessage({
+        type: "success",
+        text: response?.data?.message || "Product updated successfully"
+      });
+
       setOpenRowId(null);
 
       if (typeof refetchProducts === "function") {
         await refetchProducts();
       }
     } catch (error) {
-      console.error("Save failed:", error);
+      setMessage({
+        type: "error",
+        text:
+          error?.response?.data?.message ||
+          error?.message ||
+          "Network error"
+      });
     }
   };
 
@@ -105,14 +143,42 @@ export default function ProductTable({
     if (!confirmDelete) return;
 
     try {
-      await deleteProduct(product.id);
+      const response = await deleteProduct(product.id);
+
+      if (response?.status !== 200) {
+        setMessage({
+          type: "error",
+          text: "Server error while deleting product"
+        });
+        return;
+      }
+
+      if (response?.data?.code !== 1) {
+        setMessage({
+          type: "error",
+          text: response?.data?.message || "Delete failed"
+        });
+        return;
+      }
+
+      setMessage({
+        type: "success",
+        text: response?.data?.message || "Product deleted successfully"
+      });
+
       setOpenRowId(null);
 
       if (typeof refetchProducts === "function") {
         await refetchProducts();
       }
     } catch (error) {
-      console.error("Delete failed:", error);
+      setMessage({
+        type: "error",
+        text:
+          error?.response?.data?.message ||
+          error?.message ||
+          "Network error"
+      });
     }
   };
 
@@ -121,11 +187,26 @@ export default function ProductTable({
   }
 
   if (!safeProducts.length) {
-    return <div className="emptyState">No products found.</div>;
+    return (
+      <div className="productTableWrapper">
+        {message && (
+          <div className={`popup ${message.type}`}>
+            {message.text}
+          </div>
+        )}
+        <div className="emptyState">No products found.</div>
+      </div>
+    );
   }
 
   return (
     <div className="productTableWrapper">
+      {message && (
+        <div className={`popup ${message.type}`}>
+          {message.text}
+        </div>
+      )}
+
       <div className="productHeaderRow">
         <div></div>
 

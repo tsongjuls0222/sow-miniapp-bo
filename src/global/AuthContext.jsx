@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { refreshUserToken, logoutUser, getProfile } from "@/services/authService";
 import { interceptorService } from "@/services/interceptorService";
-
+import { useNavigate } from "react-router-dom";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  const navigate = useNavigate();
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -24,7 +25,7 @@ export function AuthProvider({ children }) {
     } finally {
       setAccessToken(null);
       setUser(null);
-      window.location.href = "/login";
+      navigate("/login", { replace: true });
     }
   };
 
