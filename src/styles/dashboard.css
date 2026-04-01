@@ -31,7 +31,6 @@ body {
   padding-top: 80px;
 }
 
-/* SIDEBAR */
 .sidebar {
   width: 250px;
   min-width: 250px;
@@ -143,7 +142,6 @@ body {
   display: none;
 }
 
-/* MAIN */
 .dashboardMain {
   flex: 1;
   min-width: 0;
@@ -158,7 +156,6 @@ body {
   overflow-x: hidden;
 }
 
-/* TOOLBAR */
 .toolbar {
   display: flex;
   justify-content: space-between;
@@ -209,7 +206,6 @@ body {
   padding: 0;
 }
 
-/* ACTION BUTTONS */
 .actionButtons {
   display: flex;
   align-items: center;
@@ -238,7 +234,6 @@ body {
   font-size: 12px;
 }
 
-/* TABLE */
 .productTableWrapper {
   width: 100%;
   overflow-x: auto;
@@ -333,7 +328,6 @@ body {
   height: 40px;
 }
 
-/* EXPANDED */
 .productExpanded {
   margin: 10px 0 0 46px;
   padding: 14px;
@@ -399,7 +393,6 @@ body {
   display: flex;
   justify-content: flex-end;
   margin-top: 14px;
-  display: flex;
   gap: 10px;
   width: 100%;
 }
@@ -607,29 +600,10 @@ body {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@media (max-width: 480px) {
-  .modalBox {
-    padding: 16px;
-    border-radius: 14px;
-  }
-
-  .modalHeader h2 {
-    font-size: 24px;
-  }
-
-  .modalActions {
-    flex-direction: column;
-  }
-
-  .modalCancelBtn,
-  .modalAddBtn {
-    width: 100%;
   }
 }
 
@@ -689,53 +663,57 @@ body {
   }
 
   .dashboardContent {
-    padding: 20px 20px 28px;
+    padding: 18px 20px 24px;
   }
 
   .toolbar {
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.95fr);
     gap: 18px;
-    margin-bottom: 24px;
+    align-items: start;
+    margin-bottom: 18px;
   }
 
   .searchSection {
+    min-width: 0;
     max-width: 100%;
-    min-width: 100%;
-    gap: 12px;
+    width: 100%;
+    gap: 10px;
   }
 
   .searchBox {
     width: 100%;
-    height: 46px;
-    padding: 0 16px;
+    height: 36px;
+    padding: 0 12px;
   }
 
   .searchBox input {
-    font-size: 16px;
+    font-size: 13px;
   }
 
   .searchBox button {
-    font-size: 26px;
+    font-size: 22px;
   }
 
   .actionButtons {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
-    justify-content: stretch;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
     align-items: center;
+    justify-content: stretch;
   }
 
   .actionBtn {
     width: 100%;
-    height: 56px;
+    height: 42px;
+    min-width: 0;
+    padding: 0;
     border-radius: 999px;
     justify-content: center;
     font-size: 0;
-    padding: 0;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    gap: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   }
 
   .actionBtn span {
@@ -743,7 +721,184 @@ body {
   }
 
   .actionBtn::before {
-    font-size: 24px;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .actionBtn:nth-child(1)::before {
+    content: "➕";
+    color: #7a5ad6;
+  }
+
+  .actionBtn:nth-child(2)::before {
+    content: "🖨";
+    color: #7ce7ef;
+  }
+
+  .actionBtn:nth-child(3)::before {
+    content: "●";
+    color: #38d9ff;
+  }
+
+  .productTableWrapper {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .productHeaderRow,
+  .productRow {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 18px 110px minmax(0, 1fr) 92px 92px 120px 22px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .productHeaderRow > div:nth-child(4),
+  .productHeaderRow > div:nth-child(8),
+  .productRow > div:nth-child(4),
+  .productRow > div:nth-child(8) {
+    display: none !important;
+  }
+
+  .productHeaderRow > div:nth-child(1),
+  .productHeaderRow > div:nth-child(2),
+  .productHeaderRow > div:nth-child(3),
+  .productHeaderRow > div:nth-child(5),
+  .productHeaderRow > div:nth-child(6),
+  .productHeaderRow > div:nth-child(7),
+  .productHeaderRow > div:nth-child(9),
+  .productRow > div:nth-child(1),
+  .productRow > div:nth-child(2),
+  .productRow > div:nth-child(3),
+  .productRow > div:nth-child(5),
+  .productRow > div:nth-child(6),
+  .productRow > div:nth-child(7),
+  .productRow > div:nth-child(9) {
+    display: flex !important;
+  }
+
+  .productHeaderRow {
+    padding: 0 2px;
+    margin-bottom: 8px;
+  }
+
+  .productRow {
+    margin-bottom: 8px;
+  }
+
+  .headerCell {
+    min-width: 0;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .headerIcon {
+    font-size: 9px;
+  }
+
+  .rowArrow {
+    font-size: 18px;
+    justify-content: flex-start;
+  }
+
+  .pill {
+    min-width: 0;
+    min-height: 32px;
+    padding: 6px 9px;
+    font-size: 11px;
+  }
+
+  .pillText {
+    font-size: 11px;
+  }
+
+  .moreBtn {
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+  }
+
+  .productExpanded {
+    margin: 8px 0 0 24px;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .expandedGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .expandedLabel {
+    font-size: 12px;
+  }
+
+  .expandedInput,
+  .expandedValue {
+    min-height: 36px;
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboardContent {
+    padding: 12px 10px 20px;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .searchSection {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    gap: 10px;
+  }
+
+  .searchBox {
+    height: 38px;
+    padding: 0 12px;
+  }
+
+  .searchBox input {
+    font-size: 13px;
+  }
+
+  .searchBox button {
+    font-size: 18px;
+  }
+
+  .actionButtons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .actionBtn {
+    width: 100%;
+    height: 40px;
+    min-width: 0;
+    border-radius: 999px;
+    padding: 0;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .actionBtn span {
+    font-size: 0;
+  }
+
+  .actionBtn::before {
+    font-size: 20px;
     line-height: 1;
   }
 
@@ -763,201 +918,75 @@ body {
   }
 
   .productTableWrapper {
-    overflow-x: visible;
+    width: 100%;
+    overflow-x: hidden;
   }
 
-  .productHeaderRow {
-    min-width: 100%;
-    grid-template-columns: 34px minmax(0, 1fr) 200px 40px;
-    gap: 14px;
-    padding: 0 6px;
-    margin-bottom: 12px;
-  }
-
+  .productHeaderRow,
   .productRow {
-    min-width: 100%;
-    grid-template-columns: 34px minmax(0, 1fr) 200px 40px;
-    gap: 14px;
-    margin-bottom: 12px;
-  }
-
-  .productHeaderRow > div:nth-child(2),
-  .productHeaderRow > div:nth-child(5),
-  .productHeaderRow > div:nth-child(6),
-  .productHeaderRow > div:nth-child(7),
-  .productHeaderRow > div:nth-child(8),
-  .productRow > div:nth-child(2),
-  .productRow > div:nth-child(5),
-  .productRow > div:nth-child(6),
-  .productRow > div:nth-child(7),
-  .productRow > div:nth-child(8) {
-    display: none;
-  }
-
-  .productHeaderRow > div:nth-child(3),
-  .productHeaderRow > div:nth-child(4) {
-    display: block;
-    font-size: 18px;
-    font-weight: 500;
-    color: #4b4b4b;
-  }
-
-  .rowArrow {
-    font-size: 26px;
-  }
-
-  .pill {
-    min-height: 42px;
-    font-size: 15px;
-    padding: 10px 14px;
-  }
-
-  .pillText {
-    font-size: 15px;
-  }
-
-  .expandedValue,
-  .expandedInput {
-    min-height: 42px;
-    font-size: 15px;
-  }
-
-  .moreBtn {
-    font-size: 22px;
-    color: #39b8ef;
-  }
-
-  .productExpanded {
-    margin: 10px 0 0 48px;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .dashboardContent {
-    padding: 12px;
-  }
-
-  .toolbar {
-    gap: 14px;
-    margin-bottom: 18px;
-  }
-
-  .searchSection {
-    gap: 10px;
-  }
-
-  .searchBox {
-    height: 40px;
-    padding: 0 12px;
-  }
-
-  .searchBox input {
-    font-size: 14px;
-  }
-
-  .searchBox button {
-    font-size: 20px;
-  }
-
-  .actionButtons {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  .actionBtn {
-    width: 100%;
-    height: 42px;
     min-width: 0;
-    border-radius: 999px;
-    padding: 0;
-    font-size: 0;
-  }
-
-  .actionBtn::before {
-    font-size: 18px;
-  }
-
-  .productTableWrapper {
-    overflow-x: visible;
-  }
-
-  .productHeaderRow {
-    min-width: 100%;
-    grid-template-columns: 24px minmax(0, 1fr) 100px 28px;
-    gap: 10px;
-    padding: 0 2px;
-    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 88px 20px;
+    gap: 8px;
     align-items: center;
-  }
-
-  .productRow {
-    min-width: 100%;
-    grid-template-columns: 24px minmax(0, 1fr) 100px 28px;
-    gap: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-  }
-
-  /* hide unused header columns but keep arrow, product, price, more */
-  .productHeaderRow > div:nth-child(2),
-  .productHeaderRow > div:nth-child(5),
-  .productHeaderRow > div:nth-child(6),
-  .productHeaderRow > div:nth-child(7),
-  .productHeaderRow > div:nth-child(8) {
-    display: none;
-  }
-
-  /* hide unused row columns but keep arrow, product, price, more */
-  .productRow > div:nth-child(2),
-  .productRow > div:nth-child(5),
-  .productRow > div:nth-child(6),
-  .productRow > div:nth-child(7),
-  .productRow > div:nth-child(8) {
-    display: none;
   }
 
   .productHeaderRow > div:nth-child(1),
-  .productHeaderRow > div:nth-child(9) {
-    display: block;
+  .productHeaderRow > div:nth-child(2),
+  .productHeaderRow > div:nth-child(4),
+  .productHeaderRow > div:nth-child(6),
+  .productHeaderRow > div:nth-child(7),
+  .productHeaderRow > div:nth-child(8),
+  .productRow > div:nth-child(1),
+  .productRow > div:nth-child(2),
+  .productRow > div:nth-child(4),
+  .productRow > div:nth-child(6),
+  .productRow > div:nth-child(7),
+  .productRow > div:nth-child(8) {
+    display: none !important;
   }
 
   .productHeaderRow > div:nth-child(3),
-  .productHeaderRow > div:nth-child(4) {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #4b4b4b;
+  .productHeaderRow > div:nth-child(5),
+  .productHeaderRow > div:nth-child(9),
+  .productRow > div:nth-child(3),
+  .productRow > div:nth-child(5),
+  .productRow > div:nth-child(9) {
+    display: flex !important;
+  }
+
+  .productHeaderRow {
+    margin-bottom: 8px;
+    padding: 0;
+  }
+
+  .productRow {
+    margin-bottom: 8px;
   }
 
   .headerCell {
-    gap: 4px;
-  }
-
-  .headerIcon {
-    font-size: 9px;
-  }
-
-  .rowArrow {
-    font-size: 16px;
+    min-width: 0;
+    font-size: 11px;
+    font-weight: 700;
   }
 
   .pill {
-    min-height: 36px;
-    padding: 7px 10px;
-    font-size: 12px;
+    min-width: 0;
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 11px;
   }
 
   .pillText {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .moreBtn {
-    width: 28px;
-    height: 28px;
-    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    justify-content: center;
   }
 
   .productExpanded {
@@ -988,73 +1017,90 @@ body {
   }
 
   .expandedActions {
-    /* justify-content: stretch; */
     margin-top: 10px;
+    flex-direction: column;
   }
 
-  .saveBtn {
+  .saveBtn,
+  .delBtn {
+    width: 100%;
+    min-width: 0;
     height: 38px;
     font-size: 13px;
   }
 }
 
 @media (max-width: 480px) {
+  .modalBox {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .modalHeader h2 {
+    font-size: 24px;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .modalCancelBtn,
+  .modalAddBtn {
+    width: 100%;
+  }
+
   .dashboardContent {
-    padding: 10px;
+    padding: 10px 8px 18px;
   }
 
   .actionButtons {
-    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
   }
 
   .actionBtn {
-    height: 38px;
+    height: 36px;
   }
 
   .actionBtn::before {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .searchBox {
-    height: 38px;
+    height: 36px;
   }
 
-  .productHeaderRow {
-    grid-template-columns: 20px minmax(0, 1fr) 90px 24px;
-    gap: 8px;
-  }
-
+  .productHeaderRow,
   .productRow {
-    grid-template-columns: 20px minmax(0, 1fr) 90px 24px;
-    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) 78px 18px;
+    gap: 6px;
   }
 
   .productHeaderRow > div:nth-child(3),
-  .productHeaderRow > div:nth-child(4) {
-    font-size: 11px;
+  .productHeaderRow > div:nth-child(5),
+  .productHeaderRow > div:nth-child(9),
+  .productRow > div:nth-child(3),
+  .productRow > div:nth-child(5),
+  .productRow > div:nth-child(9) {
+    display: flex !important;
   }
 
-  .headerIcon {
-    font-size: 8px;
-  }
-
-  .rowArrow {
-    font-size: 14px;
+  .headerCell {
+    font-size: 10px;
+    font-weight: 700;
   }
 
   .pill {
-    min-height: 34px;
-    padding: 6px 8px;
+    min-height: 30px;
+    padding: 5px 7px;
   }
 
   .pillText {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .moreBtn {
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
   }
 }
