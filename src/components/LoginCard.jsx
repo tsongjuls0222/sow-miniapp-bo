@@ -5,7 +5,7 @@ function LoginCard({ form, onChange, onSubmit, loading, errorMessage }) {
   const { t } = useLanguage();
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // prevent page reload
+    e.preventDefault();
     onSubmit();
   };
 

@@ -1,52 +1,80 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { GetLanguage } from "@/services/authService";
 
-const LanguageContext = createContext();
+const LanguageContext = createContext(null);
 
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState("en");
   const [translations, setTranslations] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const changeLanguage = async (newLang) => {
-    setLang(newLang);
-    localStorage.setItem("lang", newLang);
-
-    await loadLanguage(newLang);
-  };
-
-  const loadLanguage = async (selectedLang) => {
+  const loadLanguage = useCallback(async (selectedLang) => {
     try {
+      setLoading(true);
+
       const res = await GetLanguage(selectedLang);
-      console.log("Language API123 response:", JSON.parse(res?.data?.data?.json));
-      setTranslations(JSON.parse(res?.data?.data?.json));
-    } catch (err) {
-      console.error("Language API error:", err);
+      const rawJson = res?.data?.data?.json;
+
+      if (!rawJson) {
+        setTranslations({});
+        return;
+      }
+
+      let parsedTranslations = {};
+
+      if (typeof rawJson === "string") {
+        parsedTranslations = JSON.parse(rawJson);
+      } else if (typeof rawJson === "object") {
+        parsedTranslations = rawJson;
+      }
+
+      setTranslations(parsedTranslations || {});
+    } catch (error) {
+      console.error("Language API error:", error);
+      setTranslations({});
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  const changeLanguage = useCallback(
+    async (newLang) => {
+      if (!newLang || newLang === lang) return;
+
+      setLang(newLang);
+      localStorage.setItem("lang", newLang);
+
+      await loadLanguage(newLang);
+    },
+    [lang, loadLanguage]
+  );
 
   useEffect(() => {
     const savedLang = localStorage.getItem("lang") || "en";
     setLang(savedLang);
-
     loadLanguage(savedLang);
-  }, []);
+  }, [loadLanguage]);
 
-  const t = (key) => {
-    return translations?.[key] || key;
-  };
+  const t = useCallback(
+    (key) => {
+      return translations?.[key] || key;
+    },
+    [translations]
+  );
+
+  const value = useMemo(
+    () => ({
+      lang,
+      changeLanguage,
+      t,
+      loading,
+      translations
+    }),
+    [lang, changeLanguage, t, loading, translations]
+  );
 
   return (
-    <LanguageContext.Provider
-      value={{
-        lang,
-        changeLanguage,
-        t,
-        loading
-      }}
-    >
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );

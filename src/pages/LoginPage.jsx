@@ -4,14 +4,16 @@ import Header from "@/components/Header";
 import LoginCard from "@/components/LoginCard";
 import Footer from "@/components/Footer";
 import { loginUser } from "@/services/authService";
+import { useAuth } from "@/global/AuthContext";
 import bgImage from "@/assets/bg.jpg";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { setAccessToken, setUser } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
-    password: "",
+    password: ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ function LoginPage() {
 
     setForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -43,11 +45,18 @@ function LoginPage() {
         return;
       }
 
-      const token = response?.data?.data?.token;
+      const accessToken =
+        response?.data?.data?.accessToken ?? response?.data?.data?.token;
 
-      if (token) {
-        localStorage.setItem("token", token);
+      const user = response?.data?.data?.user ?? null;
+
+      if (!accessToken) {
+        setErrorMessage("Access token not found.");
+        return;
       }
+
+      setAccessToken(accessToken);
+      setUser(user);
 
       navigate("/pricelist");
     } catch (error) {
@@ -65,7 +74,7 @@ function LoginPage() {
     <div
       className="page"
       style={{
-        backgroundImage: `url(${bgImage})`,
+        backgroundImage: `url(${bgImage})`
       }}
     >
       <Header />

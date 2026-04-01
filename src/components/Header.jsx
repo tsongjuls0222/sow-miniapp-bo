@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "@/styles/header.css";
 import diamond_logo from "@/assets/diamond.png";
@@ -8,10 +8,28 @@ import { useLanguage } from "@/global/LanguageContext";
 
 function Header() {
   const { lang, changeLanguage, t } = useLanguage();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
-  const langLabel = lang === "en" ? "English" : "Svenska";
-  const langFlag = lang === "en" ? GB_logo : SE_logo;
+
+  const headerRef = useRef(null);
+
+  const currentLanguage = useMemo(() => {
+    return lang === "en"
+      ? { label: "English", flag: GB_logo }
+      : { label: "Svenska", flag: SE_logo };
+  }, [lang]);
+
+  const navItems = useMemo(
+    () => [
+      { label: t("Home"), to: "/" },
+      { label: t("Order"), to: "/" },
+      { label: t("Our Customers"), to: "/" },
+      { label: t("About Us"), to: "/" },
+      { label: t("Contact Us"), to: "/" }
+    ],
+    [t]
+  );
 
   const closeAll = () => {
     setIsMenuOpen(false);
@@ -30,6 +48,7 @@ function Header() {
   const handleLanguageChange = (selectedLang) => {
     changeLanguage(selectedLang);
     setIsLangOpen(false);
+    setIsMenuOpen(false);
   };
 
   useEffect(() => {
@@ -37,12 +56,23 @@ function Header() {
       closeAll();
     };
 
+    const handleClickOutside = (event) => {
+      if (headerRef.current && !headerRef.current.contains(event.target)) {
+        closeAll();
+      }
+    };
+
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
-    <header className="topbar">
+    <header className="topbar" ref={headerRef}>
       <div className="container header-inner">
         <div className="logo">
           <Link to="/login" onClick={closeAll}>
@@ -50,42 +80,48 @@ function Header() {
           </Link>
         </div>
 
-        <nav className="desktop-nav">
-          <a href="/">{t("Home")}</a>
-          <a href="/">{t("Order")}</a>
-          <a href="/">{t("Our Customers")}</a>
-          <a href="/">{t("About Us")}</a>
-          <a href="/">{t("Contact Us")}</a>
+        <nav className="desktop-nav" aria-label="Desktop navigation">
+          {navItems.map((item) => (
+            <Link key={item.label} to={item.to} onClick={closeAll}>
+              {item.label}
+            </Link>
+          ))}
 
           <div className="lang-wrapper">
             <button
               type="button"
               className="lang-trigger"
               onClick={toggleLang}
+              aria-expanded={isLangOpen}
+              aria-haspopup="true"
             >
-              <span>{langLabel}</span>
-              <img src={langFlag} alt={langLabel} className="flag-img" />
+              <span>{currentLanguage.label}</span>
+              <img
+                src={currentLanguage.flag}
+                alt={currentLanguage.label}
+                className="flag-img"
+              />
             </button>
 
             <div className={`lang-dropdown ${isLangOpen ? "show" : ""}`}>
-                <button
-                    type="button"
-                    className="lang-option"
-                    onClick={() => handleLanguageChange("sv")}
-                >
-                    <span>Svenska</span>
-                    <img src={SE_logo} className="flag-img" />
-                </button>
+              <button
+                type="button"
+                className="lang-option"
+                onClick={() => handleLanguageChange("sv")}
+              >
+                <span>Svenska</span>
+                <img src={SE_logo} alt="Svenska" className="flag-img" />
+              </button>
 
-                <button
-                    type="button"
-                    className="lang-option"
-                    onClick={() => handleLanguageChange("en")}
-                >
-                    <span>English</span>
-                    <img src={GB_logo} className="flag-img" />
-                </button>
-                </div>
+              <button
+                type="button"
+                className="lang-option"
+                onClick={() => handleLanguageChange("en")}
+              >
+                <span>English</span>
+                <img src={GB_logo} alt="English" className="flag-img" />
+              </button>
+            </div>
           </div>
         </nav>
 
@@ -95,6 +131,7 @@ function Header() {
             className={`menu-btn ${isMenuOpen ? "open" : ""}`}
             onClick={toggleMenu}
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
             <span></span>
             <span></span>
@@ -106,20 +143,30 @@ function Header() {
               type="button"
               className="mobile-lang-trigger"
               onClick={toggleLang}
+              aria-expanded={isLangOpen}
+              aria-haspopup="true"
             >
-              <span>{langLabel}</span>
-              <img src={langFlag} alt={langLabel} className="flag-img" />
+              <span>{currentLanguage.label}</span>
+              <img
+                src={currentLanguage.flag}
+                alt={currentLanguage.label}
+                className="flag-img"
+              />
             </button>
 
             <div className={`mobile-lang-dropdown ${isLangOpen ? "show" : ""}`}>
-              <button type="button" className="lang-option"
+              <button
+                type="button"
+                className="lang-option"
                 onClick={() => handleLanguageChange("sv")}
               >
                 <span>Svenska</span>
                 <img src={SE_logo} alt="Svenska" className="flag-img" />
               </button>
 
-              <button type="button" className="lang-option"
+              <button
+                type="button"
+                className="lang-option"
                 onClick={() => handleLanguageChange("en")}
               >
                 <span>English</span>
@@ -130,11 +177,11 @@ function Header() {
         </div>
 
         <div className={`mobile-menu ${isMenuOpen ? "show" : ""}`}>
-          <a href="/" onClick={closeAll}>{t("Home")}</a>
-          <a href="/" onClick={closeAll}>{t("Order")}</a>
-          <a href="/" onClick={closeAll}>{t("Our Customers")}</a>
-          <a href="/" onClick={closeAll}>{t("About Us")}</a>
-          <a href="/" onClick={closeAll}>{t("Contact Us")}</a>
+          {navItems.map((item) => (
+            <Link key={item.label} to={item.to} onClick={closeAll}>
+              {item.label}
+            </Link>
+          ))}
         </div>
       </div>
     </header>

@@ -6,36 +6,8 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  validateStatus: function (status) {
-    return true;
-  },
+  withCredentials: true
 });
 
-api.interceptors.request.use(
-  function (config) {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
-    }
-    return config;
-  },
-  function (error) {
-    console.log("Request error:", error);
-    return Promise.reject(error);
-  }
-);
-
-api.interceptors.response.use(
-  function (response) {
-    if (response.status && response.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    }
-    return response;
-  },
-  function (error) {
-    return Promise.reject(error);
-  }
-);
 
 export default api;
