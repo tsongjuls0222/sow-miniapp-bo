@@ -11,32 +11,46 @@ import {
   FaAlignLeft
 } from "react-icons/fa";
 
-export default function ProductTable({ products: initialProducts }) {
+import ProductExpanded from "@/components/ProductExpanded";
+import { deleteProduct, updateProduct } from "@/services/productService";
+
+export default function ProductTable({
+  products: initialProducts = [],
+  loading = false,
+  refetchProducts
+}) {
   const [products, setProducts] = useState([]);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [openRowId, setOpenRowId] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-
     const safeProducts = Array.isArray(initialProducts) ? initialProducts : [];
-
     setProducts(safeProducts);
-    setSelectedRowId(safeProducts?.[0]?.id ?? null);
-    setOpenRowId(null);
-
-    setLoading(false);
   }, [initialProducts]);
 
-  const selectedExists = useMemo(
-    () => products.some((item) => item.id === selectedRowId),
-    [products, selectedRowId]
-  );
+  const safeProducts = useMemo(() => {
+    return Array.isArray(products) ? products : [];
+  }, [products]);
 
-  const activeSelectedRowId = selectedExists
-    ? selectedRowId
-    : products?.[0]?.id ?? null;
+  useEffect(() => {
+    if (!safeProducts.length) {
+      setSelectedRowId(null);
+      setOpenRowId(null);
+      return;
+    }
+
+    const exists = safeProducts.some((item) => item.id === selectedRowId);
+
+    if (!exists) {
+      setSelectedRowId(safeProducts[0].id);
+      setOpenRowId(null);
+    }
+  }, [safeProducts, selectedRowId]);
+
+  const activeSelectedRowId = useMemo(() => {
+    const exists = safeProducts.some((item) => item.id === selectedRowId);
+    return exists ? selectedRowId : safeProducts?.[0]?.id ?? null;
+  }, [safeProducts, selectedRowId]);
 
   const handleSelectRow = (id) => {
     setSelectedRowId(id);
@@ -51,26 +65,62 @@ export default function ProductTable({ products: initialProducts }) {
   const handleChange = (id, field, value) => {
     setProducts((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
+        item.id === id
+          ? {
+              ...item,
+              [field]: value
+            }
+          : item
       )
     );
   };
 
-  const handleSave = (product) => {
-    console.log("Saved product:", product);
-    setOpenRowId(null);
+  const handleSave = async (product) => {
+    try {
+      await updateProduct(product.id, {
+        article_no: product.article_no,
+        name: product.name,
+        in_price: Number(product.in_price) || 0,
+        price: Number(product.price) || 0,
+        unit: product.unit,
+        stock: Number(product.stock) || 0,
+        description: product.description
+      });
+
+      setOpenRowId(null);
+
+      if (typeof refetchProducts === "function") {
+        await refetchProducts();
+      }
+    } catch (error) {
+      console.error("Save failed:", error);
+    }
   };
 
-  const handleDelete = (product) => {
-    console.log("Deleted product:", product);
-    setOpenRowId(null);
+  const handleDelete = async (product) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete "${product.name}"?`
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await deleteProduct(product.id);
+      setOpenRowId(null);
+
+      if (typeof refetchProducts === "function") {
+        await refetchProducts();
+      }
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
   };
 
   if (loading) {
     return <div className="loadingState">Loading products...</div>;
   }
 
-  if (!products.length) {
+  if (!safeProducts.length) {
     return <div className="emptyState">No products found.</div>;
   }
 
@@ -117,7 +167,7 @@ export default function ProductTable({ products: initialProducts }) {
         <div></div>
       </div>
 
-      {products.map((product) => {
+      {safeProducts.map((product) => {
         const isSelected = activeSelectedRowId === product.id;
         const isOpen = openRowId === product.id;
 
@@ -172,104 +222,12 @@ export default function ProductTable({ products: initialProducts }) {
             </div>
 
             {isOpen && (
-              <div className="productExpanded">
-                <div className="expandedGrid">
-                  <div className="expandedField">
-                    <span className="expandedLabel">Article No.</span>
-                    <input
-                      className="expandedInput"
-                      value={product.article_no || ""}
-                      onChange={(e) =>
-                        handleChange(product.id, "article_no", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <div className="expandedField">
-                    <span className="expandedLabel">In Price</span>
-                    <input
-                      className="expandedInput"
-                      value={product.in_price || ""}
-                      onChange={(e) =>
-                        handleChange(product.id, "in_price", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <div className="expandedField">
-                    <span className="expandedLabel">Unit</span>
-                    <input
-                      className="expandedInput"
-                      value={product.unit || ""}
-                      onChange={(e) =>
-                        handleChange(product.id, "unit", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <div className="expandedField">
-                    <span className="expandedLabel">In Stock</span>
-                    <input
-                      className="expandedInput"
-                      value={product.stock || ""}
-                      onChange={(e) =>
-                        handleChange(product.id, "stock", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <div className="expandedField">
-                    <span className="expandedLabel">Price</span>
-                    <input
-                      className="expandedInput"
-                      value={product.price || ""}
-                      onChange={(e) =>
-                        handleChange(product.id, "price", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <div className="expandedField">
-                    <span className="expandedLabel">Product/Service</span>
-                    <input
-                      className="expandedInput"
-                      value={product.name || ""}
-                      onChange={(e) =>
-                        handleChange(product.id, "name", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <div className="expandedField expandedFieldFull">
-                    <span className="expandedLabel">Description</span>
-                    <input
-                      className="expandedInput"
-                      value={product.description || ""}
-                      onChange={(e) =>
-                        handleChange(product.id, "description", e.target.value)
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="expandedActions">
-                  <button
-                    type="button"
-                    className="saveBtn"
-                    onClick={() => handleSave(product)}
-                  >
-                    Save
-                  </button>
-
-                  <button
-                    type="button"
-                    className="delBtn"
-                    onClick={() => handleDelete(product)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
+              <ProductExpanded
+                product={product}
+                onChange={handleChange}
+                onSave={handleSave}
+                onDelete={handleDelete}
+              />
             )}
           </div>
         );

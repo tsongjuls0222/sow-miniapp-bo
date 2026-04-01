@@ -20,26 +20,27 @@ function DashboardPage() {
     name: ""
   });
 
-  useEffect(() => {
+  const fetchProducts = async () => {
     if (!accessToken) return;
 
-    const fetchData = async () => {
-      try {
-        setLoading(true);
+    try {
+      setLoading(true);
 
-        const fetchedProducts = await getAllProducts(productfilter);
-        const productData = fetchedProducts?.data?.data ?? fetchedProducts?.data ?? [];
+      const fetchedProducts = await getAllProducts(productfilter);
+      const productData =
+        fetchedProducts?.data?.data ?? fetchedProducts?.data ?? [];
 
-        setProducts(Array.isArray(productData) ? productData : []);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-        setProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setProducts(Array.isArray(productData) ? productData : []);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchProducts();
   }, [accessToken, searchTrigger]);
 
   const handleFilterChange = (e) => {
@@ -127,7 +128,11 @@ function DashboardPage() {
               </div>
             </div>
 
-            <ProductTable products={products} loading={loading} />
+            <ProductTable
+              products={products}
+              loading={loading}
+              refetchProducts={fetchProducts}
+            />
           </main>
         </div>
       </div>

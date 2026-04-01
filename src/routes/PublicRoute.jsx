@@ -1,9 +1,14 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "@/global/AuthContext";
 
 function PublicRoute({ children }) {
-  const token = localStorage.getItem("token");
+  const { accessToken, authLoading } = useAuth();
 
-  if (token) {
+  if (authLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (accessToken) {
     return <Navigate to="/pricelist" replace />;
   }
 

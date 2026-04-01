@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "@/global/LanguageContext";
+import { useAuth } from "@/global/AuthContext";
 
 const menuItems = [
   { label: "Invoices", icon: <FaFileInvoice />, color: "#79e8e8", path: "/invoices" },
@@ -33,14 +34,14 @@ const menuItems = [
 
 export default function Sidebar({ isOpen, onClose }) {
   const { t } = useLanguage();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleMenuClick = (item) => {
+  const handleMenuClick = async (item) => {
     if (item.action === "logout") {
-      localStorage.removeItem("token");
-      navigate("/login");
       onClose?.();
+      await logout();
       return;
     }
 
@@ -56,7 +57,7 @@ export default function Sidebar({ isOpen, onClose }) {
         <div className="sidebarInner">
           <div className="sidebarTop">
             <div className="sidebarHeader">
-              <h2>Menu</h2>
+              <h2>{t("Menu")}</h2>
               <button type="button" className="closeSidebarBtn" onClick={onClose}>
                 <FaTimes />
               </button>
